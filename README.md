@@ -3,7 +3,9 @@ Python Week 3
 
 Week 3 mainly focused on the theory side of programming, like what should the program accomplish and all the thing you can accomplish by automating processes.
 
-Project Planning 
+# 1.Project Planning 
+
+![img_2.png](img_2.png)
 
 But before we dive deeper into this project, take a moment and urge you to do something important. Pause for a while and brainstorm at least three project ideas that are inspired by your own life. Jot them down on paper or type them out on your device.
     - A notepad application to take notes for efficiently
@@ -17,3 +19,24 @@ Remember, when writing user stories, focus on the user's goals and reasons, rath
 Apart from user stories, another useful planning tool for applications is called a use case. Use cases typically include a title, an actor (a user or system), and a scenario that describes how a goal is achieved.
 
 ![img.png](img.png)
+
+Apart from the user stories and use cases there are also the traditional requirements of the application.
+
+These requirements are kept at a high level, omitting specific details such as the forecast duration or temperature unit. For personal projects, this level of detail suffices, and elaboration can be left for implementation. Additional functional requirements related to the admin include configuring content sources, adding and removing recipients, scheduling the email digest, and setting email account credentials.
+
+![img_1.png](img_1.png)
+
+# Architecture
+
+Now that the requirements are captured, it's time to organize and structure the code for the application. With Python being an object-oriented programming language, considering objects and classes is essential. Looking at the requirements, use cases, and user stories, identifying nouns helps determine potential objects. For instance, in the functional requirements, words like quote, forecast, location, trends, article, content, email, and recipients stand out as potential objects.
+
+![img_3.png](img_3.png)
+
+# 1.Content Retrieval
+
+Daily inspirational quotes
+
+4 functions will be added to dd_content.py
+
+![img_4.png](img_4.png)
+
