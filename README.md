@@ -40,3 +40,46 @@ Daily inspirational quotes
 
 ![img_4.png](img_4.png)
 
+
+To implement the "get_random_quote" function, the source of random quotes needs to be determined.
+
+In the "dd_content.py" file, the "get_random_quote" function is implemented, starting at line seven. The function takes a named parameter for the quotes file location, with a default value of "quotes.csv".
+
+![img_5.png](img_5.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
