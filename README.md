@@ -47,6 +47,21 @@ In the "dd_content.py" file, the "get_random_quote" function is implemented, sta
 
 ![img_5.png](img_5.png)
 
+At line 17, the random module's "choice" function is used to select a random quote from the list, which is then returned as a dictionary object. In the main execution block, testing code is added to demonstrate the quote generation functionality. The "get_random_quote" function is called without an input argument, and the returned quote is printed. Another test is performed by setting the quotes file argument to None, triggering the exception clause and returning the default quote.
+
+![img_6.png](img_6.png)
+
+Running the script will display the generated quotes. The first quote is retrieved from the "quotes.csv" file, and the second quote is the default quote by Eric Idle, as expected.
+
+The get weather forecast will use a JSON API from the Open weather api.
+
+![img_7.png](img_7.png)
+
+During the development of the DD content module, a way was needed to fetch current Twitter trends. Luckily, Twitter offers an API for developers to access this information.
+
+To start using Tweepy, install it on your computer using the command "pip install tweepy." Then, in your code, import the Tweepy module and define a function called "get_twitter_trends" with an optional parameter for the WOEID value. Similar to the previous function, enclosed in the code within a try block to handle potential errors. The Twitter API key and secret key for authentication is provided. On line 55, the "trends_place" method from Tweepy's API class is used to retrieve the current trends for the specified WOEID. The function returned the trends as a list of dictionaries, each containing information about a trend.
+
+![img_8.png](img_8.png)
 
 
 
