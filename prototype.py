@@ -2,10 +2,8 @@ import csv
 from tkinter import *
 
 
-
-
-
 root = Tk()
+
 root.title("Welcome to GeekForGeeks")
 root.geometry('350x200')
 
@@ -28,6 +26,10 @@ lblupassword.grid(row = 2, column = 0, padx = 10, pady = 10)
 lblupassword2 = Label(root, text="Enter your password:")
 lblupassword2.grid(row = 3, column = 0, padx = 10, pady = 10)
 
+
+
+
+
 def register():
     with open("users.csv", mode="a", newline="") as f:
         writer = csv.writer(f, delimiter=",")
@@ -41,6 +43,10 @@ def register():
         else:
             print("Please try again")
 
+
+btn = Button(root, text="Click me", fg="red", command=register)
+# set Button grid
+btn.grid(column=1, row=0)
 
 def loggedin():
     top = Toplevel()
@@ -62,6 +68,7 @@ def loggedin():
     password_login.grid(row=2, column=1, padx=10, pady=10)
 
     def login():
+        global email
         email = email_login.get()
         password = password_login.get()
         with open("users.csv", mode="r") as f:
@@ -69,6 +76,7 @@ def loggedin():
             for row in reader:
                 if row == [email, password]:
                     print("You logged in!")
+                    mainmenu()
                     return True
         print("Please try again")
         return False
@@ -78,34 +86,54 @@ def loggedin():
     btnlog.grid(column=1, row=0)
     root.withdraw()
 
-
-
-# function to display text when
-# button is clicked
-
-
-
-
-
-# button widget with red color text
-# inside
-btn = Button(root, text="Click me", fg="red", command=register)
-# set Button grid
-btn.grid(column=1, row=0)
+def mainmenu():
+    menu = Toplevel()
+    menu.title("Main menu")
+    menu.geometry('600x450')
 
 
 
+    def addgroupmenu():
+        addgroup = Toplevel()
+        addgroup.title("Add Group")
+        addgroup.geometry('600x450')
 
-# Execute Tkinter
+        lblgroupname = Label(menu, text="Enter your groups name:")
+        lblgroupname.grid(row=1, column=0, padx=10, pady=10)
 
+        group_name = Entry(addgroup)
+        group_name.grid(row=1, column=1, padx=10, pady=10)
+
+        def addgroup():
+            with open("groups.csv", mode="a", newline="") as f:
+                writer = csv.writer(f, delimiter=",")
+                group = group_name.get()
+                writer.writerow([email, group])
+                print("Group added successfully!")
+
+
+
+
+        btn_submit_group = Button(menu, text="Add group", fg="red", command=addgroup)
+        btn_submit_group.grid(column=1, row=0)
+
+
+    btn_group_choose = Button(menu, text="Add group", fg="red", command=addgroupmenu)
+    btn_group_choose.grid(column=1, row=0)
+
+
+
+    btn_group_existing = Button(menu, text="Choose existing group", fg="red", command=choosegroupmenu)
+    btn_group_existing.grid(column=1, row=0)
+
+
+
+
+
+#Execute Tkinter
 root.mainloop()
 
 
-
-
-
-register()
-login()
 
 
 
