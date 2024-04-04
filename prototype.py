@@ -109,60 +109,47 @@ class main():
                                     self.learner_name.delete(0, END)
                                     print("learner added successfully!")
                             def addmarks():
-                                marklist = []
-                                self.marks_page = CTkToplevel()
-                                self.marks_page.title("Marks page")
-                                self.marks_page.geometry('600x450')
+                                def submit_marks():
+                                    # Get marks input and learner names
+                                    marks = [entry.get() for entry in marks_entries]
+                                    learner_names = [row[2] for row in learner_data]
 
-
-
-
-
-                                self.lbllearnername = CTkLabel(self.marks_page, text="Enter your learners mark:")
-                                self.lbllearnername.grid(row=1, column=0, padx=10, pady=10)
-                                self.learner_name = CTkEntry(self.marks_page)
-                                self.learner_name.grid(row=1, column=1, padx=10, pady=10)
-
-
-
-                                self.label2 = CTkLabel(master=self.marks_page, text="Enter your learners mark", width=300, bg_color="black")
-                                self.label2.grid(row=0, column=1, sticky=tk.W + tk.E)
-
-
-                                marklist[0] = CTkEntry(master=self.marks_page, placeholder_text="VALUE: ")
-                                marklist[0].grid(row=0, column=2, sticky=tk.W + tk.E)
-                                fieldnames = ['email', 'group', 'learner']
-                                with open("learner.csv", encoding="utf8") as f:
-                                    csv_reader = csv.DictReader(f, fieldnames)
-                                    next(csv_reader)
-                                    for line in csv_reader:
-                                        if line['email'] == self.email:
-                                            #print(f"Your email is {line['email']} and you are in group {line['group']} as a learner.")
-                                            # Print the learners related to the logged-in user
-                                            #print(f"Learner: {line['learner']}")
-                                            def add_Boops():
-                                                # Make input_BoX into an array
-                                                # Figure out why incrimented_Value no incriement
-                                                self.incrimented_Value += 1
-                                                self.label2 = CTkLabel(master=self.marks_page, text="PIET 2.0", width=300,
-                                                                  bg_color="black")
-                                                self.label2.grid(row=self.incrimented_Value, column=1, sticky=tk.W + tk.E)
-                                                marklist[self.incrimented_Value] = CTkEntry(master=self.marks_page, placeholder_text="VALUE: ")
-                                                marklist[self.incrimented_Value].grid(row=self.incrimented_Value, column=2, sticky=tk.W + tk.E)
-                                            add_Boops()
-
-                                def submitmarks():
-                                    with open("marks.csv", 'a', newline='') as file:
-                                        # Create a CSV writer object
+                                    # Write marks to marks.csv
+                                    with open('marks.csv', 'a', newline='') as file:
                                         writer = csv.writer(file)
-                                        # Iterate over the list and write each row to the CSV file
-                                        for row in marklist:
-                                            writer.writerow(row)
+                                        for name, mark in zip(learner_names, marks):
+                                            writer.writerow([name, mark])
 
-                                self.btn_view_learners = CTkButton(self.marks_page, text="Marking", fg_color="red", command=submitmarks)
-                                self.btn_view_learners.grid(column=2, row=0)
+                                def create_text_boxes():
+                                    global marks_entries
+                                    marks_entries = []
+                                    for i, name in enumerate(learner_names):
+                                        tk.Label(self.addmarks, text=name).grid(row=i + 1, column=0)
+                                        self.entry = CTkEntry(self.addmarks)
+                                        self.entry.grid(row=i + 1, column=1)
+                                        marks_entries.append(self.entry)
+
+                                # Read learner names from learners.csv
+                                with open('learner.csv', 'r') as file:
+                                    learner_data = list(csv.reader(file))
+
+                                # Tkinter setup
+                                self.addmarks = CTkToplevel()
+                                self.addmarks.title("Add Marks")
+
+                                # Create text boxes for marks
+                                learner_names = [row[2] for row in learner_data]
+                                create_text_boxes()
+
+                                # Submit button
+                                self.submit_button = CTkButton(self.addmarks, text="Submit Marks", command=submit_marks)
+                                self.submit_button.grid(row=len(learner_names) + 1, column=0, columnspan=2)
+
+
+
                             self.btn_submit_learner = CTkButton(self.addgroups, text="Add learner", fg_color="red", command=addlearner)
                             self.btn_submit_learner.grid(column=1, row=0)
+
                             self.btn_view_learners = CTkButton(self.addgroups, text="View learners", fg_color="red", command=addmarks)
                             self.btn_view_learners.grid(column=2, row=0)
 
