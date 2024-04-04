@@ -113,12 +113,24 @@ class main():
                                 self.marks_page = CTkToplevel()
                                 self.marks_page.title("Marks page")
                                 self.marks_page.geometry('600x450')
+
+
+
+
+
                                 self.lbllearnername = CTkLabel(self.marks_page, text="Enter your learners mark:")
                                 self.lbllearnername.grid(row=1, column=0, padx=10, pady=10)
                                 self.learner_name = CTkEntry(self.marks_page)
                                 self.learner_name.grid(row=1, column=1, padx=10, pady=10)
-                                self.frame = CTkFrame(master=self.marks_page
-                                                      )
+
+
+
+                                self.label2 = CTkLabel(master=self.marks_page, text="Enter your learners mark", width=300, bg_color="black")
+                                self.label2.grid(row=0, column=1, sticky=tk.W + tk.E)
+
+
+                                marklist[0] = CTkEntry(master=self.marks_page, placeholder_text="VALUE: ")
+                                marklist[0].grid(row=0, column=2, sticky=tk.W + tk.E)
                                 fieldnames = ['email', 'group', 'learner']
                                 with open("learner.csv", encoding="utf8") as f:
                                     csv_reader = csv.DictReader(f, fieldnames)
@@ -132,20 +144,13 @@ class main():
                                                 # Make input_BoX into an array
                                                 # Figure out why incrimented_Value no incriement
                                                 self.incrimented_Value += 1
-                                                self.label2 = CTkLabel(master=self.frame, text="PIET 2.0", width=300,
+                                                self.label2 = CTkLabel(master=self.marks_page, text="PIET 2.0", width=300,
                                                                   bg_color="black")
                                                 self.label2.grid(row=self.incrimented_Value, column=1, sticky=tk.W + tk.E)
-                                                marklist[self.incrimented_Value] = CTkEntry(master=self.frame, placeholder_text="VALUE: ")
+                                                marklist[self.incrimented_Value] = CTkEntry(master=self.marks_page, placeholder_text="VALUE: ")
                                                 marklist[self.incrimented_Value].grid(row=self.incrimented_Value, column=2, sticky=tk.W + tk.E)
                                             add_Boops()
-                                self.frame = CTkFrame(master=self.marks_page, fg_color="#EBEBEB")
-                                self.frame.pack()
-                                self.frame.columnconfigure(0, weight=1)
-                                self.frame.columnconfigure(1, weight=1)
-                                self.label2 = CTkLabel(master=self.frame, text="PIET", width=300, bg_color="black")
-                                self.label2.grid(row=0, column=1, sticky=tk.W + tk.E)
-                                marklist[0] = CTkEntry(master=self.frame, placeholder_text="VALUE: ")
-                                marklist[0].grid(row=0, column=2, sticky=tk.W + tk.E)
+
                                 def submitmarks():
                                     with open("marks.csv", 'a', newline='') as file:
                                         # Create a CSV writer object
