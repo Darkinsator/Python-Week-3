@@ -7,7 +7,7 @@ class main():
     def __init__(self):
         self.root = CTk()
         self.root.title("Welcome to GeekForGeeks")
-        self.root.geometry('500x200')
+        self.root.geometry('600x450')
         self.email_signup = CTkEntry(self.root)
         self.password_signup1 = CTkEntry(self.root)
         self.password_signup2 = CTkEntry(self.root)
@@ -25,7 +25,7 @@ class main():
         def loggedin():
             self.top = CTkToplevel()
             self.top.title("Log in")
-            self.top.geometry('350x200')
+            self.top.geometry('600x450')
             self.lblemaillog = CTkLabel(self.top, text="Enter your email:")
             self.lblemaillog.grid(row=1, column=0, padx=10, pady=10)
             self.lblupasswordlog = CTkLabel(self.top, text="Enter your password:")
@@ -93,9 +93,7 @@ class main():
                         writer.writerow([self.email, self.group])
                         print("Group added successfully!")
                         def addlearners():
-                            self.learner_page = CTkToplevel()
-                            self.learner_page.title("Add title")
-                            self.learner_page.geometry('600x450')
+
                             self.lbllearnername = CTkLabel(self.addgroups, text="Enter your learner name:")
                             self.lbllearnername.grid(row=1, column=0, padx=10, pady=10)
                             self.learner_name = CTkEntry(self.addgroups)
@@ -112,40 +110,53 @@ class main():
                                 def submit_marks():
                                     # Get marks input and learner names
                                     marks = [entry.get() for entry in marks_entries]
-                                    learner_names = [row[2] for row in learner_data]
+
 
                                     # Write marks to marks.csv
                                     with open('marks.csv', 'a', newline='') as file:
                                         writer = csv.writer(file)
                                         for name, mark in zip(learner_names, marks):
-                                            writer.writerow([name, mark])
+                                            writer.writerow([self.email, self.group, name, mark])
 
                                 def create_text_boxes():
                                     global marks_entries
                                     marks_entries = []
                                     for i, name in enumerate(learner_names):
+
                                         tk.Label(self.addmarks, text=name).grid(row=i + 1, column=0)
                                         self.entry = CTkEntry(self.addmarks)
                                         self.entry.grid(row=i + 1, column=1)
                                         marks_entries.append(self.entry)
 
-                                # Read learner names from learners.csv
-                                with open('learner.csv', 'r') as file:
-                                    learner_data = list(csv.reader(file))
+                                def filter_learner_data(email, group):
+                                    with open('learner.csv', 'r') as file:
+                                        reader = csv.reader(file)
+                                        learner_data = [row for row in reader if row[0] == email and row[1] == group]
+                                    return learner_data
+
+                                # Get email and group of the current user (example values)
+                                current_user_email = self.email
+                                current_user_group = self.group
+
+                                # Filter learner data based on user email and group
+                                learner_data = filter_learner_data(current_user_email, current_user_group)
+
+
+
 
                                 # Tkinter setup
                                 self.addmarks = CTkToplevel()
                                 self.addmarks.title("Add Marks")
+                                self.addmarks.geometry('600x450')
 
                                 # Create text boxes for marks
+
                                 learner_names = [row[2] for row in learner_data]
                                 create_text_boxes()
 
                                 # Submit button
                                 self.submit_button = CTkButton(self.addmarks, text="Submit Marks", command=submit_marks)
                                 self.submit_button.grid(row=len(learner_names) + 1, column=0, columnspan=2)
-
-
 
                             self.btn_submit_learner = CTkButton(self.addgroups, text="Add learner", fg_color="red", command=addlearner)
                             self.btn_submit_learner.grid(column=1, row=0)
