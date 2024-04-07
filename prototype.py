@@ -2,13 +2,14 @@ from tkinter import messagebox
 from tkinter import ttk
 from customtkinter import *
 import csv
-import customtkinter
 import tkinter as tk
-from PIL import Image
 import re
-class main():
-    incrimented_Value = 0
+import threading
+
+
+class Main:
     def __init__(self):
+
         self.root = CTk()
         self.root.title("Welcome to Marking program")
         self.root.geometry('900x600')
@@ -22,12 +23,12 @@ class main():
         self.password_signup2.grid(row=3, column=1, padx=10, pady=10)
         self.root.config(bg="gray")
         self.lblemail = CTkLabel(self.root, text="Enter your email:", bg_color="gray")
-        self.lblemail.grid(row = 1, column = 0, padx = 10, pady = 10)
+        self.lblemail.grid(row=1, column=0, padx=10, pady=10)
 
         self.lblupassword = CTkLabel(self.root, text="Enter your password:", bg_color="gray")
-        self.lblupassword.grid(row = 2, column = 0, padx = 10, pady = 10)
+        self.lblupassword.grid(row=2, column=0, padx=10, pady=10)
         self.lblupassword2 = CTkLabel(self.root, text="Confirm your password:", bg_color="gray")
-        self.lblupassword2.grid(row = 3, column = 0, padx = 10, pady = 10)
+        self.lblupassword2.grid(row=3, column=0, padx=10, pady=10)
 
         def loggedin():
             self.top = CTkToplevel()
@@ -44,6 +45,7 @@ class main():
             self.password_login = CTkEntry(self.top, show="*", bg_color="gray")
             self.email_login.grid(row=1, column=1, padx=10, pady=10)
             self.password_login.grid(row=2, column=1, padx=10, pady=10)
+
             def login():
                 global email
                 self.email = self.email_login.get()
@@ -53,10 +55,12 @@ class main():
                     for row in reader:
                         if row == [self.email, self.password]:
                             print("You logged in!")
+                            self.top.withdraw()
                             mainmenu()
                             return True
                 print("Please try again")
                 return False
+
             self.btnlog = CTkButton(self.top, text="Login", fg_color="red", command=login)
             # set Button grid
             self.btnlog.grid(column=1, row=3)
@@ -80,10 +84,10 @@ class main():
                 else:
                     messagebox.showerror("Error", "Passwords do not match")
 
-        self.btn = CTkButton(self.root, text="Register", fg_color="red", command=register , bg_color="gray")
+        self.btn = CTkButton(self.root, text="Register", fg_color="red", command=register, bg_color="gray")
         # set Button grid
         self.btn.grid(column=1, row=5)
-        self.btn_account = CTkButton(self.root, text="Already have an account?", command=loggedin , bg_color="gray")
+        self.btn_account = CTkButton(self.root, text="Already have an account?", command=loggedin, bg_color="gray")
         self.btn_account.grid(column=3, row=5)
 
         def mainmenu():
@@ -93,7 +97,8 @@ class main():
             self.menu.config(bg="gray")
             self.lbl_learners = CTkLabel(self.menu, text="WELCOME TO THE MARKOHOLIC GRADING SYSTEM", bg_color="gray")
             self.lbl_learners.grid(row=0, column=0, padx=10, pady=10)
-            #GUI CODE
+
+            # GUI CODE
 
             def load_groups():
                 # Read groups from groups.csv
@@ -122,7 +127,6 @@ class main():
                 for row in learner_marks:
                     total_marks += int(row[3])
 
-
                 if num_learners > 0:
                     average_mark = total_marks / num_learners
                     self.lbl_average = CTkLabel(self.view_marks_window, text=f"Average Mark: {average_mark:.2f}")
@@ -132,20 +136,17 @@ class main():
                     self.lbl_no_data.grid(pady=5)
 
             def view_groups():
-                self.groups_window = tk.Toplevel()
+                self.groups_window = CTkToplevel()
                 self.groups_window.title("View Groups")
                 self.groups_window.geometry('900x600')
                 self.groups_window.config(bg="gray")
+                self.menu.withdraw()
                 # Load groups
                 groups = load_groups()
 
                 # Create buttons for each group
                 for group in groups:
-                    tk.Button(self.groups_window, text=group, command=lambda g=group: view_group_marks(g)).pack()
-
-
-
-
+                    CTkButton(self.groups_window, text=group, command=lambda g=group: view_group_marks(g)).pack()
 
             def addgroupmenu():
                 self.addgroups = CTkToplevel()
@@ -156,6 +157,7 @@ class main():
                 self.lblgroupname.grid(row=1, column=0, padx=10, pady=10)
                 self.group_name = CTkEntry(self.addgroups)
                 self.group_name.grid(row=1, column=1, padx=10, pady=10)
+                self.menu.withdraw()
                 def addgroup():
                     with open("groups.csv", mode="a", newline="") as f:
                         writer = csv.writer(f, delimiter=",")
@@ -163,12 +165,14 @@ class main():
                         self.group = self.group_name.get()
                         writer.writerow([self.email, self.group])
                         print("Group added successfully!")
+
                         def addlearners():
 
                             self.lbllearnername = CTkLabel(self.addgroups, text="Enter your learner name:")
                             self.lbllearnername.grid(row=1, column=0, padx=10, pady=10)
                             self.learner_name = CTkEntry(self.addgroups)
                             self.learner_name.grid(row=1, column=1, padx=10, pady=10)
+
                             def addlearner():
                                 with open("learner.csv", mode="a", newline="") as f:
                                     writer = csv.writer(f, delimiter=",")
@@ -177,6 +181,7 @@ class main():
                                     writer.writerow([self.email, self.group, self.learner])
                                     self.learner_name.delete(0, END)
                                     print("learner added successfully!")
+
                             def addmarks():
                                 def submit_marks():
                                     # Get marks input and learner names
@@ -187,12 +192,13 @@ class main():
                                         writer = csv.writer(file)
                                         for name, mark in zip(learner_names, marks):
                                             writer.writerow([self.email, self.group, name, mark])
+                                    messagebox.showinfo("Marks info:", "MARKS SUBMITTED")
+                                    view_groups()
 
                                 def create_text_boxes():
                                     global marks_entries
                                     marks_entries = []
                                     for i, name in enumerate(learner_names):
-
                                         tk.Label(self.addmarks, text=name).grid(row=i + 1, column=0)
                                         self.entry = CTkEntry(self.addmarks)
                                         self.entry.grid(row=i + 1, column=1)
@@ -211,9 +217,6 @@ class main():
                                 # Filter learner data based on user email and group
                                 learner_data = filter_learner_data(current_user_email, current_user_group)
 
-
-
-
                                 # Tkinter setup
                                 self.addmarks = CTkToplevel()
                                 self.addmarks.title("Add Marks")
@@ -227,23 +230,28 @@ class main():
                                 # Submit button
                                 self.submit_button = CTkButton(self.addmarks, text="Submit Marks", command=submit_marks)
                                 self.submit_button.grid(row=len(learner_names) + 1, column=0, columnspan=2)
+                                self.btn_group_choose = CTkButton(self.addmarks, text="View groups", fg_color="red", command=view_groups)
+                                self.btn_group_choose.grid(row=len(learner_names) + 1, column=4, columnspan=2)
 
-                            self.btn_submit_learner = CTkButton(self.addgroups, text="Add learner", fg_color="red", command=addlearner)
+                            self.btn_submit_learner = CTkButton(self.addgroups, text="Add learner", fg_color="red",
+                                                                command=addlearner)
                             self.btn_submit_learner.grid(column=1, row=0)
 
-                            self.btn_view_learners = CTkButton(self.addgroups, text="View learners", fg_color="red", command=addmarks)
+                            self.btn_view_learners = CTkButton(self.addgroups, text="View learners", fg_color="red",
+                                                               command=addmarks)
                             self.btn_view_learners.grid(column=2, row=0)
 
                         addlearners()
+
                 self.btn_submit_group = CTkButton(self.addgroups, text="Add group", fg_color="red", command=addgroup)
                 self.btn_submit_group.grid(column=1, row=0)
+
             self.btn_group_choose = CTkButton(self.menu, text="Add group", fg_color="red", command=addgroupmenu)
             self.btn_group_choose.grid(column=0, row=1)
             self.btn_group_choose = CTkButton(self.menu, text="View groups", fg_color="red", command=view_groups)
             self.btn_group_choose.grid(column=0, row=2)
 
-            #btn_group_existing = Button(menu, text="Choose existing group", fg="red", command=choosegroupmenu)
-            #btn_group_existing.grid(column=1, row=0)
-        #Execute Tkinter
         self.root.mainloop()
-main()
+
+
+Main()
