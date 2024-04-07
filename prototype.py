@@ -1,10 +1,12 @@
 from tkinter import messagebox
 from tkinter import ttk
 from customtkinter import *
+from customtkinter import CTk
 import csv
 import tkinter as tk
 import re
 import threading
+from PIL import ImageTk, Image
 
 
 class Main:
@@ -15,6 +17,16 @@ class Main:
         self.root.geometry('900x600')
         self.email_signup = CTkEntry(self.root, bg_color="gray")
         self.style = ttk.Style(self.root)
+        self.image = Image.open("MARKOHOLIC.jpg")
+        self.image = self.image.resize((300, 250))
+        self.photo = ImageTk.PhotoImage(self.image)
+        # Convert the Image object into a Tkinter PhotoImage object
+
+        self.canvas = CTkCanvas(self.root, width=self.image.width, height=self.image.height, bg="gray")
+        self.canvas.grid()
+
+        # Add the image to the canvas
+        self.canvas.create_image(0, 0, anchor="nw", image=self.photo)
 
         self.password_signup1 = CTkEntry(self.root, show="*", bg_color="gray")
         self.password_signup2 = CTkEntry(self.root, show="*", bg_color="gray")
