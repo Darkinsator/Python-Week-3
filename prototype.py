@@ -127,13 +127,13 @@ class Main:
         self.setup_image(self.current_frame)
 
         self.lbl_welcome = CTkLabel(self.current_frame, text="WELCOME TO THE MARKOHOLIC GRADING SYSTEM", bg_color="gray")
-        self.lbl_welcome.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
+        self.lbl_welcome.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
 
         self.btn_add_group = CTkButton(self.current_frame, text="Add group", fg_color="red", command=self.addgroupmenu)
         self.btn_view_groups = CTkButton(self.current_frame, text="View groups", fg_color="red", command=self.view_groups)
 
-        self.btn_add_group.grid(column=0, row=1, pady=10)
-        self.btn_view_groups.grid(column=1, row=1, pady=10)
+        self.btn_add_group.grid(column=0, row=2, pady=10)
+        self.btn_view_groups.grid(column=1, row=2, pady=10)
 
     def load_groups(self):
         with open('groups.csv', 'r') as file:
@@ -200,9 +200,9 @@ class Main:
         groups = self.load_groups()
         for i, g in enumerate(groups):
             lbl_group = CTkLabel(self.current_frame, text=g, bg_color="gray")
-            lbl_group.grid(row=i, column=0, padx=10, pady=10)
+            lbl_group.grid(row=i + 1, column=0, padx=10, pady=10)
             btn_view_marks = CTkButton(self.current_frame, text="View Marks", fg_color="red", command=lambda group=g: self.view_group_marks(group))
-            btn_view_marks.grid(row=i, column=1, padx=10, pady=10)
+            btn_view_marks.grid(row=i + 1, column=1, padx=10, pady=10)
 
     def addgroupmenu(self):
         self.clear_frame()
@@ -213,11 +213,11 @@ class Main:
 
         self.group_name = CTkEntry(self.current_frame, bg_color="white")
         self.lblgroup = CTkLabel(self.current_frame, text="Enter the group name:", bg_color="gray")
-        self.lblgroup.grid(row=0, column=0, padx=10, pady=10)
-        self.group_name.grid(row=0, column=1, padx=10, pady=10)
+        self.lblgroup.grid(row=1, column=0, padx=10, pady=10)
+        self.group_name.grid(row=1, column=1, padx=10, pady=10)
 
         self.btn_group = CTkButton(self.current_frame, text="Add Group", fg_color="red", command=self.addgroup)
-        self.btn_group.grid(row=1, column=0, columnspan=2, pady=10)
+        self.btn_group.grid(row=2, column=0, columnspan=2, pady=10)
 
     def addgroup(self):
         group = self.group_name.get()
